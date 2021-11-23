@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "downloading wget"
+su -c "yum -y install wget"
 
 echo "downloading kafka...$KAFKA_VERSION"
 
