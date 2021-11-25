@@ -3,15 +3,16 @@
 
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "centos/6"
+  config.vm.box = "centos/7"
   config.ssh.forward_agent = true # So that boxes don't have to setup key-less ssh
   config.ssh.insert_key = false # To generate a new ssh key and don't use the default Vagrant one
 
   vars = { 
-     "KAFKA_VERSION" => "1.1.0",
-     "KAFKA_NAME" => "kafka_2.11-$KAFKA_VERSION",
+     "KAFKA_VERSION" => "3.0.0",
+     "KAFKA_NAME" => "kafka_2.12-$KAFKA_VERSION",
      "KAFKA_TARGET" => "/vagrant/tars/",
      "KAFKA_HOME" => "$HOME/$KAFKA_NAME"
+
   }
 
   # escape environment variables to be loaded to /etc/profile.d/
@@ -33,17 +34,27 @@ Vagrant.configure("2") do |config|
   end
 
   # configure brokers
-  (1..3).each do |i|
+  (1..5).each do |i|
     config.vm.define "broker#{i}" do |s|
       s.vm.hostname = "broker#{i}"
-      s.vm.network "private_network", ip: "10.30.3.#{4-i}0"
+      s.vm.network "private_network", ip: "10.30.3.#{6-i}0"
       #s.vm.network "private_network", ip: "10.30.3.#{4-i}0", netmask: "255.255.255.0", virtualbox__intnet: "my-network", drop_nat_interface_default_route: true
       s.vm.provision "shell", run: "always", path: "scripts/broker.sh", args:"#{i}", privileged: false, env: vars
     end
   end
 
+  # configure grafana dashboard to visualize kafka topics metrics
+  #  config.vm.define "grafana" do |s|
+  #    s.vm.hostname = "grafana"
+  #    s.vm.network "private_network", ip: "10.30.3.7"
+  #    s.vm.provision "shell", run: "always", path: "scripts/dashboard.sh" , privileged: false, env: vars
+  #  end
+
+
+
   config.vm.provider "virtualbox" do |v|
     #  This setting controls how much cpu time a virtual CPU can use. A value of 50 implies a single virtual CPU can use up to 50% of a single host CPU.
     v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+    v.memory = 1500
   end
 end
