@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "downloading wget"
-su -c "yum -y install wget"
+sudo  yum -y install wget
 
 echo "downloading kafka...$KAFKA_VERSION"
 
@@ -12,7 +12,7 @@ fi
 
 echo "installing JDK and Kafka..."
 
-su -c "yum -y install java-1.8.0-openjdk-devel"
+sudo  yum -y install java-1.8.0-openjdk-devel
 
 
 if [ ! -d $KAFKA_NAME ]; then 
