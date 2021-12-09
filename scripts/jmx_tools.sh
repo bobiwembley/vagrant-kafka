@@ -8,6 +8,7 @@ else
  cd  $KAFKA_HOME/libs/
  wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.13.0/jmx_prometheus_javaagent-0.13.0.jar
  sed -i '$ i\export KAFKA_OPTS="'"-javaagent:$KAFKA_HOME/libs/jmx_prometheus_javaagent-0.13.0.jar=7075:$KAFKA_HOME/config/sample_jmx_exporter.yml"'"'  $KAFKA_HOME/bin/kafka-server-start.sh 
+fi
 
 if [ -f  $KAFKA_HOME/config/sample_jmx_exporter.yml ]
 then
@@ -121,5 +122,4 @@ rules:
    labels:
      quantile: "0.\$4"
 EOF'
-
 fi
