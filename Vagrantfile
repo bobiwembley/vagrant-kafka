@@ -40,8 +40,9 @@ Vagrant.configure("2") do |config|
       s.vm.network "private_network", ip: "10.30.3.#{6-i}0"
       #s.vm.network "private_network", ip: "10.30.3.#{4-i}0", netmask: "255.255.255.0", virtualbox__intnet: "my-network", drop_nat_interface_default_route: true  
       s.vm.provision "shell", run: "always", path: "scripts/init.sh", args:"#{i}", privileged: false, env: vars
-      s.vm.provision "shell", run: "always", path: "scripts/broker.sh", args:"#{i}", privileged: false, env: vars
       s.vm.provision "shell", run: "always", path: "scripts/jmx_tools.sh", args:"#{i}", privileged: false, env: vars
+      s.vm.provision "shell", run: "always", path: "scripts/broker.sh", args:"#{i}", privileged: false, env: vars
+
     end
   end
 
