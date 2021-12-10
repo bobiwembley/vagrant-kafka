@@ -1,22 +1,25 @@
-Vagrant - Kafka
+Vagrant - Kafka - grafana/prometheus
+
+**UPDATE** New version of kafka ( latest one in 2021/12/10) Now it's CentOS 7 with a grafana server and a kafka-worker to test an "infra-as-sandbox".
 =============
 
 Vagrant configuration to setup a partitioned Apache Kafka installation with clustered Apache Zookeeper.
+**Added** to this vagrant env. grafana/prometheus server to monitor kafka-cluster
 
 This configuration will start and provision six CentOS6 VMs:
 
 * Three hosts forming a three node Apache Zookeeper Quorum (Replicated ZooKeeper)
 * Three Apache Kafka nodes with one broker each
 
-Each host is a Centos 6.9 64-bit VM provisioned with JDK 8 and Kafka 1.1.0. 
+Each host is a Centos 7 64-bit VM provisioned with JDK 8 and Kafka 2.12 
 
 Here we will be using the verion of Zookeeper that comes pre-packaged with Kafka. This will be Zookeeper version 3.4.10 for the version of Kafka we use. 
 
 Prerequisites
 -------------------------
 
-* Vagrant (tested with 2.0.2) **[make sure you are on 2.x.x version of Vagrant]**
-* VirtualBox (tested with 5.1.12)
+* Vagrant (tested with 2.2.19) **[make sure you are on 2.x.x version of Vagrant]**
+* VirtualBox (tested with 6.1.30 )
 
 Setup
 -------------------------
@@ -32,9 +35,11 @@ Here is the mapping of VMs to their private IPs:
 | zookeeper1 | vkc-zk1   | 10.30.3.2  |
 | zookeeper2 | vkc-zk2   | 10.30.3.3  |
 | zookeeper3 | vkc-zk3   | 10.30.3.4  |
-| broker1    | vkc-br1   | 10.30.3.30 |
-| broker2    | vkc-br2   | 10.30.3.20 |
-| broker3    | vkc-br3   | 10.30.3.10 |
+| broker1    | vkc-br1   | 10.30.3.50 |
+| broker2    | vkc-br2   | 10.30.3.40 |
+| broker3    | vkc-br3   | 10.30.3.30 |
+| grafana/prometheus| vkc-gfn | 10.30.3.7 |
+| kafka-worker | vkc-wkr      | 10.30.3.8 |
 
 Hosts file entries:
 
@@ -45,6 +50,8 @@ Hosts file entries:
 10.30.3.30 	vkc-br1
 10.30.3.20 	vkc-br2
 10.30.3.10 	vkc-br3
+10.30.3.7   vkc-gfn
+10.30.3.8   vkc-wkr
 ```
 
 Zookeeper servers bind to port 2181. Kafka brokers bind to port 9092. 
@@ -63,6 +70,8 @@ zookeeper3                running (virtualbox)
 broker1                   running (virtualbox)
 broker2                   running (virtualbox)
 broker3                   running (virtualbox)
+grafana                   running (virtualbox)
+kafka-broker              running (virtualbox)
 
 
 This environment represents multiple VMs. The VMs are all listed
